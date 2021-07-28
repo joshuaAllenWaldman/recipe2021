@@ -6,10 +6,12 @@ const cors = require('cors')
 const app = express();
 
 const PORT =  process.env.PORT || 4000
+const routes = require('./routes')
+
 
 app.use(cors())
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({extended: false}))
+app.use(express.json())
+
 
 
 app.get('/', (req, res) => {
@@ -17,5 +19,7 @@ app.get('/', (req, res) => {
     <h1>Recipe Server has Begun.</h1>
   `)
 })
+
+app.use('/api/v1/users', routes.users)
 
 app.listen(PORT, () => console.log(`Server connected running on port: ${PORT}`))

@@ -12,5 +12,6 @@ mongoose.connect(connectionString, {
   .catch((err) => console.log(err))
 
 module.exports = {
-  
+  User: require('./User'),
+  Recipe: require('./Recipe')
 }
