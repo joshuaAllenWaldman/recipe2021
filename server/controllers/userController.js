@@ -21,53 +21,20 @@ const bcrypt = require('bcrypt')
 // })
 
 const signup = async (req, res) => {
-  console.log(req.body)
+  const { username, email, password } = req.body
+
   try {
-
-    const hashedPassword = await bcrypt.hash(req.body.password, 10)
-    const newUser = {
-      name: req.body.name,
-      username: req.body.username,
-      email: req.body.email,
-      password: hashedPassword
-    }
-    db.User.create(newUser, (err, createdUser) => {
-      if(err) return console.log(err)
-      res.json(createdUser)
-      return console.log('User Created')
-    })
-
-  } catch {
-    res.status(500).send()
+    const user = await User.create({ username, email, password});
+    res.status(201).json(user)
+  } 
+  catch(err) {
+    console.log(err)
   }
   
 }
 
 const login = async (req, res) => {
-  db.User.findOne({username: req.body.username}, (err, foundUser) => {
-    if(err) return console.log(err)
-    try{
-      if (bcrypt.compare(req.body.password, foundUser.password)){
-        console.log('passwords match')
-      } else {
-        console.log('passwords dont match')
-      }
-  } catch{
-    console.log('err')
-  }
-  })
-
-  // try{
-  //     if (bcrypt.compare(req.body.password, foundUser.password)){
-  //       console.log('passwords match')
-  //     } else {
-  //       console.log('passwords dont match')
-  //     }
-  // } catch {
-
-  // }
-
-
+  
 
 }
 
