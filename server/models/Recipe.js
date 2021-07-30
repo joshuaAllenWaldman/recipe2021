@@ -8,14 +8,12 @@ const recipeSchema = new mongoose.Schema({
   url: {
     type: String,
     required: true,
-    unique: true
   },
   notes: {
     type: String
   },
   tags: {
-    type: [String],
-    unique: true
+    type: [String]
   },
   user: {
     type: mongoose.Schema.Types.ObjectId,
