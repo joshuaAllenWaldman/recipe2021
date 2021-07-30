@@ -1,31 +1,26 @@
 
 const db = require('../models');
 const bcrypt = require('bcrypt')
-// const jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 
-// function authenticateToken(req, res, nex){
-//   const authHeader = req.headers['authorization']
-//   const token = authHeader && authHeader.split(' ')[1]
-//   if(token == null) return res.sendStatus(401)
 
-//   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
-//     if(err) return res.sendStatus(403)
-//     req.user = user
-//     next()
-//   })
-// }
-// db.User.create(req.body, (err, newUser) => {
-//   if(err) return console.log(err)
-//   res.json(newUser)
-//   return console.log('User Created')
-// })
+// JSON WEB TOKEN CREATION
+const maxAge = 3 * 24 * 60 * 60
+const createToken = (id) => {
+  return jwt.sign({ id }, 'gooble gobble lim lim', {
+    expiresIn: maxAge
+  })
+}
+
+// Auth Controllers
 
 const signup = async (req, res) => {
   const { username, email, password } = req.body
-
   try {
-    const user = await User.create({ username, email, password});
-    res.status(201).json(user)
+    const user = await db.User.create({ username, email, password});
+    const token = createToken(user._id)
+    res.cookie('jwt', token, {httpOnly: true, maxAge: maxAge * 1000})
+    res.status(201).json({ user: user._id })
   } 
   catch(err) {
     console.log(err)
@@ -34,12 +29,33 @@ const signup = async (req, res) => {
 }
 
 const login = async (req, res) => {
-  
+  const { username, email, password } = req.body
 
+  try {
+    const user = await db.User.login(username, password)
+    if(user){
+      console.log(user)
+      const token = createToken(user._id)
+      res.cookie('jwt', token, {httpOnly: true, maxAge: maxAge * 1000})
+      res.status(201).json({ user: user._id, username: user.username, token: token })
+    }
+    res.status(400).json({user: 'not found'})
+  } 
+  catch(err) {
+    res.status(400).json({status: 400})
+  }
+
+}
+
+const logout = async (req, res) => {
+  res.cookie('jwt', '', { maxAge: 1} )
+  res.send('Logged out')
+  // need to redirect here
 }
 
 
 module.exports = {
   signup,
-  login
+  login,
+  logout
 }

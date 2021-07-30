@@ -14,7 +14,8 @@ const recipeSchema = new mongoose.Schema({
     type: String
   },
   tags: {
-    type: String
+    type: [String],
+    unique: true
   },
   user: {
     type: mongoose.Schema.Types.ObjectId,

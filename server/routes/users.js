@@ -5,5 +5,7 @@ router.post('/signup', controllers.users.signup)
 
 router.post('/login', controllers.users.login)
 
+router.get('/logout', controllers.users.logout)
+
 
 module.exports = router;
