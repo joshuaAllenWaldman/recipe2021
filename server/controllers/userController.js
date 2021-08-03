@@ -12,8 +12,12 @@ const createToken = (id) => {
   })
 }
 
-// Auth Controllers
 
+//dev index 
+
+
+
+// Auth Controllers
 const signup = async (req, res) => {
   const { username, email, password } = req.body
   try {
