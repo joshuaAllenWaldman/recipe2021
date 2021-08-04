@@ -1,73 +1,104 @@
-import React, { useRef } from 'react'
-import axios from 'axios'
-import { useForm } from 'react-hook-form'
+import React, { useRef } from 'react';
+import axios from 'axios';
+import { useForm, Controller } from 'react-hook-form';
+import {
+  Button,
+  Box,
+  TextField,
+  FormControl,
+  InputLabel,
+} from '@material-ui/core';
 
-
-
-const SignupForm = ({ setIsLoggedIn, history }) => {
+const Signup2 = ({ setIsLoggedIn, history }) => {
   const { register, handleSubmit, watch, errors } = useForm();
-  
+
   const onSubmit = (data) => {
-    console.log(data)
-    const { confPassword, ...rest} = data
+    console.log(data);
+    const { confPassword, ...rest } = data;
     fetch('http://localhost:4000/api/v1/users/signup', {
       method: 'POST',
       headers: {
-        "Content-Type": "application/json"
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify(rest)
+      body: JSON.stringify(rest),
     })
-    .then((res) => res.json())
-    .then((jsonData) => console.log(jsonData))
-    .then(() => setIsLoggedIn(true))
-    .then(() => history.push('/home'))
-    .catch((err) => console.log(err))
-  }
-
+      .then((res) => res.json())
+      .then((jsonData) => console.log(jsonData))
+      .then(() => setIsLoggedIn(true))
+      .then(() => history.push('/home'))
+      .catch((err) => console.log(err));
+  };
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-    >
-      <div className="userNameField">
-        <label htmlFor="username">Username</label>
-        <input 
-          type="text"
-          {...register("username")}
-          id="name"
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <Box display="flex" flexDirection="column" alignItems="center">
+        <h1>Sign Up</h1>
+        <FormControl className="userNameField">
+          <TextField
+            variant="outlined"
+            margin="normal"
+            {...register('username')}
+            required
+            fullWidth
+            id="username"
+            label="Username"
+            name="username"
+            autoFocus
+            type="text"
+            id="username"
           />
-      </div>
-      <div className="emailField">
-        <label htmlFor="email">Email</label>
-        <input 
-          type="text"
-          {...register("email")}
-          id="email"
-        />
-
-      </div>
-      <div className="passwordField">
-        <label htmlFor="password">Password</label>
-        <input 
-          type="text"
-          {...register("password")}
-          id="password"
-        />
-
-      </div>
-      <div className="confPasswordField">
-        <label htmlFor="confPassword">Confirm Password</label>
-        <input 
-          type="text"
-          {...register("confPassword")}
-          id="confPassword"
-        />
-
-      </div>
-      <button type="submit">Create Account</button>
-
+        </FormControl>
+        <FormControl className="emailField">
+          <TextField
+            variant="outlined"
+            margin="normal"
+            {...register('email')}
+            required
+            fullWidth
+            id="email"
+            label="Email"
+            name="email"
+            autoFocus
+            type="text"
+            id="email"
+          />
+        </FormControl>
+        <FormControl className="passwordField">
+          <TextField
+            variant="outlined"
+            margin="normal"
+            {...register('password')}
+            required
+            fullWidth
+            id="password"
+            label="password"
+            name="password"
+            autoFocus
+            type="password"
+            id="password"
+          />
+        </FormControl>
+        <FormControl className="confPasswordField">
+          <TextField
+            variant="outlined"
+            margin="normal"
+            {...register('confPassword')}
+            required
+            fullWidth
+            id="confPassword"
+            label="Confirm Password"
+            name="confPassword"
+            autoFocus
+            type="password"
+            id="confPassword"
+          />
+        </FormControl>
+        <Button type="submit" variant="contained" color="primary">
+          Create Account
+        </Button>
+      </Box>
     </form>
-  )
-}
+  );
+};
 
-export default SignupForm;
+export default Signup2;
