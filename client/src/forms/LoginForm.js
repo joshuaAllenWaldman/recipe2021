@@ -8,8 +8,9 @@ import {
   FormControl,
   InputLabel,
 } from '@material-ui/core';
+import Cookies from 'js-cookie'
 
-const LoginForm = ({ setIsLoggedIn, history }) => {
+const LoginForm = ({ setIsLoggedIn, history, setToken }) => {
   const { register, handleSubmit, watch, errors } = useForm();
 
   const onSubmit = (data) => {
@@ -23,7 +24,11 @@ const LoginForm = ({ setIsLoggedIn, history }) => {
       body: JSON.stringify(data),
     })
       .then((res) => res.json())
-      .then((jsonData) => console.log(jsonData))
+      .then((jsonData) => {
+        console.log(jsonData)
+        const token = jsonData.token
+        setToken({token})
+      })
       .then(() => setIsLoggedIn(true))
       .then(() => history.push('/home'))
       .catch((err) => console.log(err));

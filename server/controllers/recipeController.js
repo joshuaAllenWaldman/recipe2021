@@ -45,7 +45,7 @@ const create = (req, res) => {
     const recipeObj = {
       name: req.body.name,
       url: req.body.url,
-      user: req.user._id
+      user: req.user.id
     }
     db.Recipe.create(recipeObj, (err, newRecipe) => {
       if(err) return console.log(err)

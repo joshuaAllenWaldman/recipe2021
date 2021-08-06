@@ -1,10 +1,18 @@
-
+import {List, ListItem} from "@material-ui/core"
 
 const RecipeList = () => {
   return(
-    <ul>
-      
-    </ul>
+    <List>
+      <ListItem>
+        Recipe 1
+      </ListItem>
+      <ListItem>
+        Recipe 2
+      </ListItem>
+      <ListItem>
+        Recipe 3
+      </ListItem>
+    </List>
   )
 }
 

@@ -4,17 +4,14 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken');
 
 
+
 // JSON WEB TOKEN CREATION
 const maxAge = 3 * 24 * 60 * 60
 const createToken = (id) => {
-  return jwt.sign({ id }, 'gooble gobble lim lim', {
+  return jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: maxAge
   })
 }
-
-
-//dev index 
-
 
 
 // Auth Controllers
@@ -23,8 +20,7 @@ const signup = async (req, res) => {
   try {
     const user = await db.User.create({ username, email, password});
     const token = createToken(user._id)
-    res.cookie('jwt', token, {httpOnly: true, maxAge: maxAge * 1000})
-    res.status(201).json({ user: user._id })
+    res.status(201).json({ user: user._id, token: token })
   } 
   catch(err) {
     console.log(err)
@@ -38,10 +34,8 @@ const login = async (req, res) => {
   try {
     const user = await db.User.login(username, password)
     if(user){
-      console.log(user)
       const token = createToken(user._id)
-      res.cookie('jwt', token, {httpOnly: true, maxAge: maxAge * 1000})
-      res.status(201).json({ user: user._id, username: user.username })
+      res.status(201).json({ user: user._id, username: user.username, token: token})
     }
   } 
   catch(err) {
@@ -51,8 +45,7 @@ const login = async (req, res) => {
 }
 
 const logout = async (req, res) => {
-  res.cookie('jwt', '', { maxAge: 1} )
-  res.send('Logged out')
+    res.send('Logged out')
   // need to redirect here
 }
 
