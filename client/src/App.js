@@ -7,7 +7,8 @@ import { TokenContext } from './hooks/useApi';
 import Header from './components/Header';
 import HomePage from './pages/HomePage';
 import AuthPage from './pages/AuthPage';
-import RecipePage from './pages/RecipePage';
+import NewRecipePage from './pages/NewRecipePage';
+import ShowRecipePage from './pages/ShowRecipePage';
 
 function App() {
   let history = useHistory();
@@ -33,9 +34,17 @@ function App() {
           )}
           {isLoggedIn && (
             <Route
-              path="/recipe"
+              path="/recipe/new"
               render={(props) => (
-                <RecipePage token={token} isLoggedIn={isLoggedIn} {...props} />
+                <NewRecipePage token={token} isLoggedIn={isLoggedIn} {...props} />
+              )}
+            />
+          )}
+          {isLoggedIn && (
+            <Route
+              path="/recipe/:id"
+              render={(props) => (
+                <ShowRecipePage token={token} isLoggedIn={isLoggedIn} {...props} />
               )}
             />
           )}

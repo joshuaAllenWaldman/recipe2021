@@ -17,7 +17,15 @@ const API_BASE = 'http://localhost:4000/api/v1';
 
 export default function useApi() {
   const {token} = useContext(TokenContext);
-  const get = (path, args) => fetch(path, {...args, Authorization: `Bearer ${token}`});
+  const get = (path, args) => fetch(path, {
+    ...args, 
+    Authorization: `Bearer ${token}`, 
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    }
+    });
   const post = (path, args) => fetch(path, {
     ...args,
     method: 'POST',

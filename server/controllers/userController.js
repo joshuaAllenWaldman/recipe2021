@@ -19,8 +19,11 @@ const signup = async (req, res) => {
   const { username, email, password } = req.body
   try {
     const user = await db.User.create({ username, email, password});
-    const token = createToken(user._id)
+    if(user){
+      const token = createToken(user._id)
     res.status(201).json({ user: user._id, token: token })
+    }
+    
   } 
   catch(err) {
     console.log(err)
