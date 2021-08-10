@@ -62,7 +62,7 @@ const LoginForm = ({ setIsLoggedIn, history, setToken }) => {
             id="password"
             label="password"
             name="password"
-            autoFocus
+
             type="password"
             id="password"
           />

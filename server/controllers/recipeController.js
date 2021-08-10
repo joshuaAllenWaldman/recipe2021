@@ -84,6 +84,7 @@ const destroy = (req, res) => {
     if(err) return console.log(err)
     console.log('deleted!')
     res.status(200)
+    res.send('Deleted.')
   })
 }
 

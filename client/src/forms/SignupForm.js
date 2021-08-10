@@ -58,7 +58,7 @@ const Signup2 = ({ setIsLoggedIn, history }) => {
             id="email"
             label="Email"
             name="email"
-            autoFocus
+            
             type="text"
             id="email"
           />
@@ -73,7 +73,7 @@ const Signup2 = ({ setIsLoggedIn, history }) => {
             id="password"
             label="password"
             name="password"
-            autoFocus
+            
             type="password"
             id="password"
           />
@@ -88,7 +88,7 @@ const Signup2 = ({ setIsLoggedIn, history }) => {
             id="confPassword"
             label="Confirm Password"
             name="confPassword"
-            autoFocus
+            
             type="password"
             id="confPassword"
           />

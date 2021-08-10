@@ -9,6 +9,7 @@ import HomePage from './pages/HomePage';
 import AuthPage from './pages/AuthPage';
 import NewRecipePage from './pages/NewRecipePage';
 import ShowRecipePage from './pages/ShowRecipePage';
+import EditRecipePage from './pages/EditRecipePage';
 
 function App() {
   let history = useHistory();
@@ -29,6 +30,14 @@ function App() {
                   isLoggedIn={isLoggedIn}
                   {...props}
                 />
+              )}
+            />
+          )}
+          {isLoggedIn && (
+            <Route
+              path="/recipe/:id/edit"
+              render={(props) => (
+                <EditRecipePage token={token} isLoggedIn={isLoggedIn} {...props} />
               )}
             />
           )}

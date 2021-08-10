@@ -11,20 +11,20 @@ import {
 
 import useApi from '../hooks/useApi';
 
-const NewRecipeForm = ({ setIsLoggedIn, history, token }) => {
+const EditRecipeForm = ({ recipe, history }) => {
   const { register, handleSubmit, watch, errors } = useForm();
-  const {post} = useApi();
+  const { put } = useApi();
 
-  
+
   const onSubmit = (data) => {
     console.log(data);
-    post('http://localhost:4000/api/v1/recipes/new',
+    put(`http://localhost:4000/api/v1/recipes/${recipe._id}/update`,
     {
       body: JSON.stringify(data),
     })
       .then((res) => res.json())
       .then((jsonData) => console.log(jsonData))
-      .then(() => history.push('/home'))
+      .then(() => history.push(`/recipe/${recipe._id}`))
       .catch((err) => console.log(err));
   };
 
@@ -41,6 +41,7 @@ const NewRecipeForm = ({ setIsLoggedIn, history, token }) => {
             id="name"
             label="name"
             name="name"
+            defaultValue={recipe.name}
             autoFocus
             type="text"
             id="name"
@@ -55,8 +56,11 @@ const NewRecipeForm = ({ setIsLoggedIn, history, token }) => {
             fullWidth
             id="url"
             label="url"
+            defaultValue={recipe.url}
+        
             name="url"
 
+            autoFocus
             type="text"
             id="url"
           />
@@ -67,21 +71,24 @@ const NewRecipeForm = ({ setIsLoggedIn, history, token }) => {
             margin="normal"
             {...register('notes')}
             required
+            label="name"
+            defaultValue={recipe.notes}
+
             fullWidth
             id="notes"
-            label="notes"
+         
             name="notes"
-
+            autoFocus
             type="text"
             id="notes"
           />
         </FormControl>
         <Button type="submit" variant="contained" color="primary">
-          Add Recipe
+          Submit Changes
         </Button>
       </Box>
     </form>
   );
 };
 
-export default NewRecipeForm;
+export default EditRecipeForm;

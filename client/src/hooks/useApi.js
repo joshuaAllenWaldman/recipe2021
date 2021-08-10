@@ -36,8 +36,26 @@ export default function useApi() {
     },
 
   });
-  const del = (path, args) => fetch();
-  const put = (path, args) => fetch();
+  const del = (path, args) => fetch(path, {
+    ...args,
+    method: 'DELETE',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+
+  });
+  const put = (path, args) => fetch(path, {
+    ...args,
+    method: 'PUT',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+
+  });
   return {
     get,
     post,

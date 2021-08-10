@@ -26,7 +26,7 @@ const useStyles = makeStyles(() => ({
 
 const HomePage = ({setIsLoggedIn}) => {
   const [recipes, setRecipes] = useState([])
-
+  const [searchTerm, setSearchTerm ] = useState('')
   const classes = useStyles()
   const { get } = useApi()
 
@@ -43,19 +43,27 @@ const HomePage = ({setIsLoggedIn}) => {
     fetchRecipes()
   }, [])
 
+  
+
 
 
   return (
       <div className={classes.homePageContainer} >
         <h1>My Recipes</h1>
         <div>
-        <InputBase
-          placeholder="Search…"
-          inputProps={{ 'aria-label': 'search' }}
-        />
+        
       </div>
+      <InputBase
+        className={classes.searchBar}
+        onChange={(event) => setSearchTerm(event.target.value)}
+        placeholder="Search…"
+        inputProps={{ 'aria-label': 'search' }}
+      />
         <Box className={classes.box} overflow="scroll" maxHeight="30%" >
-          <RecipeList recipes={recipes}/> 
+          <RecipeList recipes={recipes.filter((rec) => {
+            if(searchTerm == '') return rec;
+            if (rec.name.toLowerCase().includes(searchTerm.toLowerCase())) return rec;
+          })}/> 
         </Box>
         <Link style={{textDecoration: 'none'}} to="/recipe/new">
           <Button variant="contained" color="primary">New Recipe</Button>
