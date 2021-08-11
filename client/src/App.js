@@ -1,5 +1,4 @@
-import axios from 'axios';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Route, Switch, Redirect, useHistory } from 'react-router-dom';
 
 import { TokenContext } from './hooks/useApi';
@@ -16,10 +15,20 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [token, setToken] = useState({ token: undefined });
 
+  useEffect(() => {
+    const savedToken = JSON.parse(window.localStorage.getItem("token"))
+    if(savedToken){
+      setToken({token: savedToken})
+      setIsLoggedIn(true)
+      history.push('/home')
+    }
+  }, [])
+
+
   return (
     <TokenContext.Provider value={token}>
       <div className="App">
-        <Header setIsLoggedIn={setIsLoggedIn} isLoggedIn={isLoggedIn} />
+        <Header setToken={setToken} setIsLoggedIn={setIsLoggedIn} isLoggedIn={isLoggedIn} />
         <Switch>
           {isLoggedIn && (
             <Route

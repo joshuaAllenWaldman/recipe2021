@@ -28,6 +28,9 @@ const LoginForm = ({ setIsLoggedIn, history, setToken }) => {
         console.log(jsonData)
         const token = jsonData.token
         setToken({token})
+        if(token){
+          window.localStorage.setItem("token", JSON.stringify(token))
+        }
       })
       .then(() => setIsLoggedIn(true))
       .then(() => history.push('/home'))

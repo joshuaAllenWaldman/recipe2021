@@ -14,8 +14,14 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const Header = ({ isLoggedIn, setIsLoggedIn }) => {
+const Header = ({ isLoggedIn, setIsLoggedIn, setToken }) => {
   const classes = useStyles();
+
+  const logout = () => {
+    setToken({token: undefined})
+    setIsLoggedIn(false)
+    window.localStorage.removeItem("token")
+  }
 
   return (
     <div classes={classes.root}>
@@ -24,7 +30,7 @@ const Header = ({ isLoggedIn, setIsLoggedIn }) => {
           <Typography variant="h6" classes={classes.title}>
             Reci.P
           </Typography>
-          <Button color="inherit" onClick={() => setIsLoggedIn(false)}>
+          <Button color="inherit" onClick={logout}>
             {isLoggedIn ? 'Logout' : 'Login'}
           </Button>
         </Toolbar>
