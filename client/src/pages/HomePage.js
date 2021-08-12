@@ -5,6 +5,11 @@ import {
   makeStyles,
   InputBase,
   Typography,
+  ListItem,
+  ButtonBase,
+  Card,
+  CardHeader,
+  CardActions,
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import AddBoxIcon from '@material-ui/icons/AddBox';
@@ -18,22 +23,29 @@ import SignupForm from '../forms/SignupForm';
 const useStyles = makeStyles((theme) => ({
   box: {
     overflowY: 'scroll',
-    maxHeight: '70vh',
+    maxHeight: '80%',
     marginBottom: '2px',
     scrollbarColor: 'inherit',
     width: '100vw',
+    overflow: 'scroll',
+    minHeight: '80%',
   },
   homePageContainer: {
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    height: '85vh',
+    height: '92vh',
   },
   newRecipeButton: {
     margin: theme.spacing(2),
   },
   searchBar: {},
+  card: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
 }));
 
 const HomePage = ({ setIsLoggedIn }) => {
@@ -65,14 +77,31 @@ const HomePage = ({ setIsLoggedIn }) => {
         type="search"
         inputProps={{ 'aria-label': 'search' }}
       />
-      <Box className={classes.box} overflow="scroll" maxHeight="30%">
-        <RecipeList
-          recipes={recipes.filter((rec) => {
-            if (searchTerm == '') return rec;
-            if (rec.name.toLowerCase().includes(searchTerm.toLowerCase()))
-              return rec;
-          })}
-        />
+      <Box className={classes.box}>
+        {recipes.length > 0 && (
+          <RecipeList
+            recipes={recipes.filter((rec) => {
+              if (searchTerm == '') return rec;
+              if (rec.name.toLowerCase().includes(searchTerm.toLowerCase()))
+                return rec;
+            })}
+          />
+        )}
+        {recipes.length === 0 && (
+          <Card className={classes.card}>
+            <CardHeader title={'No recipes in collection'} />
+            <CardActions>
+              <Button
+                variant="outlined"
+                color="primary"
+                component={Link}
+                to={`/recipe/new`}
+              >
+                Add Recipe
+              </Button>
+            </CardActions>
+          </Card>
+        )}
       </Box>
 
       <Button

@@ -111,13 +111,13 @@ function App() {
               )}
             />
           </Switch>
-          <Footer 
+          {/* <Footer 
             setToken={setToken}
             setIsLoggedIn={setIsLoggedIn}
             isLoggedIn={isLoggedIn}
             showLogin={showLogin}
             setShowLogin={setShowLogin}
-          />
+          /> */}
         </div>
     </TokenContext.Provider>
   );

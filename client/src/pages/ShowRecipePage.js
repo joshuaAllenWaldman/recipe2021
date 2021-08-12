@@ -16,6 +16,10 @@ import { spacing } from '@material-ui/system';
 
 import useApi from '../hooks/useApi';
 
+import DeleteRecipeModal from '../components/recipeComponents/DeleteRecipeModal';
+
+
+
 const useStyles = makeStyles((theme) => ({
   card: {
     minWidth: '100%',
@@ -23,15 +27,25 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    justifyContent: 'space-around'
   },
 }));
 
 const ShowRecipePage = ({ history }) => {
+  const [open, setOpen] = useState(false);
   const { id } = useParams();
   const { get, del } = useApi();
   const [recipe, setRecipe] = useState({});
 
   const classes = useStyles();
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const fetchRecipe = () => {
     get('http://localhost:4000/api/v1/recipes/' + id)
@@ -45,8 +59,9 @@ const ShowRecipePage = ({ history }) => {
     del('http://localhost:4000/api/v1/recipes/' + id)
       .then(() => setRecipe({}))
       .then(() => history.push('/home'))
-      .then(() => console.log('made it this far'))
+      .then(() => handleClose())
       .catch((err) => console.log(err));
+
   };
 
   useEffect(() => {
@@ -57,15 +72,21 @@ const ShowRecipePage = ({ history }) => {
 
   return (
     <Card className={classes.card}>
-      <CardHeader title={name} />
-      <CardContent>
-        <Typography variant="subtitle1" component={Link} to={url}>
-          Go to Recipe Page
-        </Typography>
-      </CardContent>
+      <CardHeader 
+        titleTypographyProps={{variant:'h2', align:'center'}}
+        title={name}
+
+      />
+        
+
       <CardContent>
         <Typography variant="h4">Notes:</Typography>
         <Typography variant="subtitle1">{notes}</Typography>
+      </CardContent>
+      <CardContent>
+        <Button variant="contained" color="primary" style={{textDecoration: 'none', fontSize:'30px'}} href={url} target="_blank">
+          Go to Recipe Page
+        </Button>
       </CardContent>
 
       <CardContent>
@@ -84,7 +105,7 @@ const ShowRecipePage = ({ history }) => {
           <Button
             size="large"
             m={1}
-            onClick={deleteRecipe}
+            onClick={handleClickOpen}
             variant="outlined"
             color="secondary"
             startIcon={<DeleteIcon />}
@@ -94,14 +115,16 @@ const ShowRecipePage = ({ history }) => {
         </ButtonGroup>
       </CardContent>
       <Button
-        size="small"
-        component={Link}
+        size="large"
+        component={Link}  
         to={'/home'}
         variant="contained"
         color="secondary"
+        fullWidth
       >
         Back
       </Button>
+      <DeleteRecipeModal open={open} deleteRecipe={deleteRecipe} handleClose={handleClose} />
     </Card>
   );
 };

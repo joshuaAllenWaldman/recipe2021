@@ -50,9 +50,6 @@ const NewRecipePage = ({ history }) => {
     const copiedText = navigator.clipboard.readText()
     .then((clipText) => {
       if(validURL(clipText)){
-      console.log('it is a url', clipText)
-      // alert('You have a URL copied, do you want to past it?')
-      setValue("url", clipText.toString())
       setCopiedUrl(clipText);
     }})
     .catch((err) => console.log(err))
@@ -68,6 +65,7 @@ const NewRecipePage = ({ history }) => {
       .then((res) => res.json())
       .then((jsonData) => console.log(jsonData))
       .then(() => history.push('/home'))
+      .then(() => setCopiedUrl(undefined))
       .catch((err) => console.log(err));
   };
 
@@ -99,8 +97,9 @@ const NewRecipePage = ({ history }) => {
             type="text"
             id="url"
             value={copiedUrl || ''}
-            onChange={() => {
-              setCopiedUrl(undefined)
+            onChange={(event) => {
+              setCopiedUrl(event.target.value)
+              
             } }
           />
           <TextField
@@ -118,6 +117,16 @@ const NewRecipePage = ({ history }) => {
             id="notes"
           />
         <ButtonGroup fullWidth className={classes.buttonContainer}>
+        <Button
+            size="large"
+            fullWidth
+            component={Link}
+            to="/home"
+            variant="contained"
+            color="secondary"
+          >
+            Go Back
+          </Button>
           <Button
             size="large"
             fullWidth
@@ -126,16 +135,6 @@ const NewRecipePage = ({ history }) => {
             color="primary"
           >
             Add Recipe
-          </Button>
-          <Button
-            size="large"
-            fullWidth
-            component={Link}
-            to="/home"
-            variant="contained"
-            color="secondary"
-          >
-            Cancel
           </Button>
         </ButtonGroup>
       </Container>

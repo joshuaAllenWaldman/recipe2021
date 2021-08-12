@@ -11,8 +11,9 @@ const app = express();
 const PORT =  process.env.PORT || 4000
 const routes = require('./routes')
 
+
 app.use(cors({
-  origin: 'http://localhost:3000',
+  origin: process.env.CORS_ORIGIN || 'http://localhost:3000',
   credentials: true
 }))
 app.use(express.json())

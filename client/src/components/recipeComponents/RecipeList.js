@@ -8,7 +8,8 @@ import {
   ButtonBase,
   makeStyles,
   InputBase,
-  Button
+  Button,
+  
 } from '@material-ui/core';
 
 import RecipeListItem from './RecipeListItem';
@@ -40,14 +41,6 @@ const RecipeList = ({ recipes }) => {
             );
           })}
       </List>}
-      {recipes.length === 0 && 
-        <ListItem component={Link} to={`/recipe/new`}>
-                <ButtonBase className={classes.root}>
-                  <h3>No Recipes in Collection</h3>
-                  <Button variant='contained' color='primary'  >Add New Recipe</Button>
-                </ButtonBase>
-              </ListItem>
-      }
     </>
   );
 };
