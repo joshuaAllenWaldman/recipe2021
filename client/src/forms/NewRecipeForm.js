@@ -7,14 +7,24 @@ import {
   TextField,
   FormControl,
   InputLabel,
+  makeStyles
 } from '@material-ui/core';
 
 import useApi from '../hooks/useApi';
 
+const useStyles = makeStyles(() => ({
+  box: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between"
+  }
+}))
+
+
 const NewRecipeForm = ({ setIsLoggedIn, history, token }) => {
   const { register, handleSubmit, watch, errors } = useForm();
   const {post} = useApi();
-
+  const classes = useStyles()
   
   const onSubmit = (data) => {
     console.log(data);
@@ -30,7 +40,7 @@ const NewRecipeForm = ({ setIsLoggedIn, history, token }) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Box display="flex" flexDirection="column">
+      <Box className={classes.box} >
         <FormControl>
           <TextField
             variant="outlined"

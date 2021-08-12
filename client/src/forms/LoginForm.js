@@ -1,35 +1,51 @@
 import React, { useRef } from 'react';
-import axios from 'axios';
 import { useForm } from 'react-hook-form';
 import {
   Button,
-  Box,
+  Container,
   TextField,
-  FormControl,
-  InputLabel,
+  makeStyles,
+  Typography,
 } from '@material-ui/core';
-import Cookies from 'js-cookie'
+import CssBaseline from '@material-ui/core/CssBaseline';
+
+import useApi from '../hooks/useApi';
+
+const useStyles = makeStyles((theme) => ({
+  container: {},
+  paper: {
+    marginTop: theme.spacing(8),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: "space-between"
+  },
+  form: {
+    width: '100%',
+    marginTop: theme.spacing(1),
+  },
+  loginButton: {
+    position: 'static',
+    bottom: '0'
+  }
+}));
 
 const LoginForm = ({ setIsLoggedIn, history, setToken }) => {
   const { register, handleSubmit, watch, errors } = useForm();
+  const { login } = useApi();
+  const classes = useStyles();
 
   const onSubmit = (data) => {
-    console.log(data);
-
-    fetch('http://localhost:4000/api/v1/users/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+    login('http://localhost:4000/api/v1/users/login', {
       body: JSON.stringify(data),
     })
       .then((res) => res.json())
       .then((jsonData) => {
-        console.log(jsonData)
-        const token = jsonData.token
-        setToken({token})
-        if(token){
-          window.localStorage.setItem("token", JSON.stringify(token))
+        console.log(jsonData);
+        const token = jsonData.token;
+        setToken({ token });
+        if (token) {
+          window.localStorage.setItem('token', JSON.stringify(token));
         }
       })
       .then(() => setIsLoggedIn(true))
@@ -38,9 +54,10 @@ const LoginForm = ({ setIsLoggedIn, history, setToken }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <Box display="flex" flexDirection="column">
-        <FormControl className="userNameField">
+    <Container className={classes.container}>
+      <CssBaseline />
+      <div className={classes.paper}>
+        <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -54,8 +71,7 @@ const LoginForm = ({ setIsLoggedIn, history, setToken }) => {
             type="text"
             id="username"
           />
-        </FormControl>
-        <FormControl className="passwordField">
+
           <TextField
             variant="outlined"
             margin="normal"
@@ -65,14 +81,16 @@ const LoginForm = ({ setIsLoggedIn, history, setToken }) => {
             id="password"
             label="password"
             name="password"
-
             type="password"
             id="password"
           />
-        </FormControl>
-        <Button type="submit" variant="contained" color="primary">Login</Button>
-      </Box>
-    </form>
+
+          <Button fullWidth type="submit" variant="contained" color="primary">
+            Login
+          </Button>
+        </form>
+      </div>
+    </Container>
   );
 };
 

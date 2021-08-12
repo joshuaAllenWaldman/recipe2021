@@ -3,37 +3,61 @@ import axios from 'axios';
 import { useForm, Controller } from 'react-hook-form';
 import {
   Button,
-  Box,
+  Container,
   TextField,
   FormControl,
-  InputLabel,
+  makeStyles,
+  Typography,
 } from '@material-ui/core';
+import CssBaseline from '@material-ui/core/CssBaseline';
 
-const Signup2 = ({ setIsLoggedIn, history }) => {
+import useApi from '../hooks/useApi';
+
+
+const useStyles = makeStyles((theme) => ({
+  container: {},
+  paper: {
+    marginTop: theme.spacing(8),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  form: {
+    width: '100%',
+    marginTop: theme.spacing(1),
+  },
+}));
+
+const SignupForm = ({ setIsLoggedIn, history, setToken }) => {
   const { register, handleSubmit, watch, errors } = useForm();
+  const { signup } = useApi()
+  const classes = useStyles();
 
+  
   const onSubmit = (data) => {
-    console.log(data);
     const { confPassword, ...rest } = data;
-    fetch('http://localhost:4000/api/v1/users/signup', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+    signup('http://localhost:4000/api/v1/users/signup', {
       body: JSON.stringify(rest),
     })
       .then((res) => res.json())
-      .then((jsonData) => console.log(jsonData))
+      .then((jsonData) => {
+        const token = jsonData.token;
+        setToken({ token });
+        if (token) {
+          window.localStorage.setItem('token', JSON.stringify(token));
+        }
+      })
       .then(() => setIsLoggedIn(true))
       .then(() => history.push('/home'))
       .catch((err) => console.log(err));
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <Box display="flex" flexDirection="column" alignItems="center">
-        <h1>Sign Up</h1>
-        <FormControl className="userNameField">
+    <Container component="main" maxWidth="xs">
+      <CssBaseline />
+      <div className={classes.paper}>
+        <Typography>Sign Up</Typography>
+        <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -47,8 +71,6 @@ const Signup2 = ({ setIsLoggedIn, history }) => {
             type="text"
             id="username"
           />
-        </FormControl>
-        <FormControl className="emailField">
           <TextField
             variant="outlined"
             margin="normal"
@@ -58,12 +80,9 @@ const Signup2 = ({ setIsLoggedIn, history }) => {
             id="email"
             label="Email"
             name="email"
-            
             type="text"
             id="email"
           />
-        </FormControl>
-        <FormControl className="passwordField">
           <TextField
             variant="outlined"
             margin="normal"
@@ -73,12 +92,9 @@ const Signup2 = ({ setIsLoggedIn, history }) => {
             id="password"
             label="password"
             name="password"
-            
             type="password"
             id="password"
           />
-        </FormControl>
-        <FormControl className="confPasswordField">
           <TextField
             variant="outlined"
             margin="normal"
@@ -88,17 +104,16 @@ const Signup2 = ({ setIsLoggedIn, history }) => {
             id="confPassword"
             label="Confirm Password"
             name="confPassword"
-            
             type="password"
             id="confPassword"
           />
-        </FormControl>
-        <Button type="submit" variant="contained" color="primary">
-          Create Account
-        </Button>
-      </Box>
-    </form>
+          <Button fullWidth type="submit" variant="contained" color="primary">
+            Create Account
+          </Button>
+        </form>
+      </div>
+    </Container>
   );
 };
 
-export default Signup2;
+export default SignupForm;

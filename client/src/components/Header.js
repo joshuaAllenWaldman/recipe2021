@@ -1,4 +1,13 @@
-import {  makeStyles, AppBar, Toolbar, Typography, Button } from '@material-ui/core';
+
+import { Link } from 'react-router-dom';
+import {
+  makeStyles,
+  AppBar,
+  Toolbar,
+  Typography,
+  Button,
+  IconButton,
+} from '@material-ui/core';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -6,42 +15,49 @@ const useStyles = makeStyles(() => ({
   },
   title: {
     flexGrow: 1,
-  },
-  toolbar: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
+    textDecoration: 'none'
   },
 }));
 
-const Header = ({ isLoggedIn, setIsLoggedIn, setToken }) => {
+const Header = ({ isLoggedIn, setIsLoggedIn, setToken, showLogin, setShowLogin }) => {
+  
+
   const classes = useStyles();
 
   const logout = () => {
-    setToken({token: undefined})
-    setIsLoggedIn(false)
-    window.localStorage.removeItem("token")
+    setToken({ token: undefined });
+    setIsLoggedIn(false);
+    window.localStorage.removeItem('token');
+  };
+  const handleAuthButtonDisplay = () => {
+    if(!showLogin){
+      return <Button color="inherit" onClick={() => setShowLogin(true)} >Login </Button>
+    } 
+    if(showLogin){
+      return <Button color="inherit" onClick={() => setShowLogin(false)} >Sign Up! </Button>
+    }
   }
 
   return (
-    <div classes={classes.root}>
+    <div className={classes.root}>
       <AppBar position="relative">
-        <Toolbar classes={classes.toolbar}>
-          <Typography variant="h6" classes={classes.title}>
+        <Toolbar>
+          <Typography component={Link} color="inherit" to='/home' variant="h4" className={classes.title}>
             Reci.P
           </Typography>
-          <Button color="inherit" onClick={logout}>
-            {isLoggedIn ? 'Logout' : 'Login'}
-          </Button>
+          {
+            isLoggedIn && 
+            <Button color="inherit" onClick={logout}>
+              Logout
+            </Button>
+          }
+          {
+            !isLoggedIn && handleAuthButtonDisplay()
+          }
         </Toolbar>
       </AppBar>
-
     </div>
-
   );
 };
-
-
-
 
 export default Header;

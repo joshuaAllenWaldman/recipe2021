@@ -17,6 +17,20 @@ const API_BASE = 'http://localhost:4000/api/v1';
 
 export default function useApi() {
   const {token} = useContext(TokenContext);
+  const signup = (path, args) => fetch(path, {
+    ...args,
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  const login = (path, args) => fetch(path, {
+    ...args,
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+  });
   const get = (path, args) => fetch(path, {
     ...args, 
     Authorization: `Bearer ${token}`, 
@@ -61,6 +75,8 @@ export default function useApi() {
     get,
     post,
     del,
-    put
+    put,
+    signup, 
+    login
   };
 }

@@ -1,34 +1,42 @@
-import { useState } from 'react'
-import {Box, Button} from '@material-ui/core'
-import SignupForm from "../forms/SignupForm"
-import LoginForm from "../forms/LoginForm"
+import { useState } from 'react';
+import { Box, Button, Typography, makeStyles } from '@material-ui/core';
+import SignupForm from '../forms/SignupForm';
+import LoginForm from '../forms/LoginForm';
 
+
+const useStyles = makeStyles(() => ({
+  container: {
+    display: 'flex',
+    justifyContent: 'space-around',
+    flexDirection: 'column',
+  }
+}))
 
 const AuthPage = (props) => {
-  const [ showLogin, setShowLogin ] = useState(true)
 
+  const classes = useStyles()
 
-  return(
-    <Box 
-      display="flex"
-      flexDirection="column"
-      alignItems="center"
-    >
-        {!showLogin &&  <SignupForm 
+  return (
+    // <Box fullWidth className={classes.container} >
+    <>
+      {!props.showLogin && (
+        <SignupForm
           setIsLoggedIn={props.setIsLoggedIn}
           history={props.history}
           setToken={props.setToken}
-        />}
+        />
+      )}
 
-        {showLogin &&  <LoginForm
+      {props.showLogin && (
+        <LoginForm
           setIsLoggedIn={props.setIsLoggedIn}
           history={props.history}
           setToken={props.setToken}
-        />}
-        <Button variant="contained" color="secondary" onClick={() => setShowLogin(!showLogin)} >Switch to {showLogin ? 'Signup' : 'Login'}</Button>
-    </Box>
+        />
+      )}
+      </>
+    // </Box>
+  );
+};
 
-  )
-}
-
-export default AuthPage 
+export default AuthPage;
